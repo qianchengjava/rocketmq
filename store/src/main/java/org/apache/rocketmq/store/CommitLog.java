@@ -19,10 +19,7 @@ package org.apache.rocketmq.store;
 import java.net.Inet6Address;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.apache.rocketmq.common.ServiceThread;
@@ -65,10 +62,11 @@ public class CommitLog {
     private volatile long beginTimeInLock = 0;
     protected final PutMessageLock putMessageLock;
 
-    public CommitLog(final DefaultMessageStore defaultMessageStore) {
+    public CommitLog(final DefaultMessageStore defaultMessageStore,boolean qianChengDebug) {
         this.mappedFileQueue = new MappedFileQueue(defaultMessageStore.getMessageStoreConfig().getStorePathCommitLog(),
             defaultMessageStore.getMessageStoreConfig().getMappedFileSizeCommitLog(), defaultMessageStore.getAllocateMappedFileService());
         this.defaultMessageStore = defaultMessageStore;
+        defaultMessageStore.setMyDebug(qianChengDebug);
 
         if (FlushDiskType.SYNC_FLUSH == defaultMessageStore.getMessageStoreConfig().getFlushDiskType()) {
             this.flushCommitLogService = new GroupCommitService();
@@ -1006,6 +1004,11 @@ public class CommitLog {
             CommitLog.log.info(this.getServiceName() + " service started");
 
             while (!this.isStopped()) {
+                if(CommitLog.this.defaultMessageStore.isMyDebug()){
+                    System.out.println("钱铖测试日志:" +this.getServiceName() + " service flush time:" + new Date());
+                }
+                CommitLog.log.info(this.getServiceName() + " service flush time:" + new Date());
+
                 boolean flushCommitLogTimed = CommitLog.this.defaultMessageStore.getMessageStoreConfig().isFlushCommitLogTimed();
 
                 int interval = CommitLog.this.defaultMessageStore.getMessageStoreConfig().getFlushIntervalCommitLog();

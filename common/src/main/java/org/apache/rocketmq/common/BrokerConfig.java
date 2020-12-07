@@ -28,6 +28,18 @@ import org.apache.rocketmq.remoting.common.RemotingUtil;
 public class BrokerConfig {
     private static final InternalLogger log = InternalLoggerFactory.getLogger(LoggerName.COMMON_LOGGER_NAME);
 
+    @ImportantField
+    private boolean qianChengDebug = false;
+
+    public boolean isQianChengDebug() {
+        return qianChengDebug;
+    }
+
+    public void setQianChengDebug(boolean qianChengDebug) {
+        this.qianChengDebug = qianChengDebug;
+    }
+
+
     private String rocketmqHome = System.getProperty(MixAll.ROCKETMQ_HOME_PROPERTY, System.getenv(MixAll.ROCKETMQ_HOME_ENV));
     @ImportantField
     private String namesrvAddr = System.getProperty(MixAll.NAMESRV_ADDR_PROPERTY, System.getenv(MixAll.NAMESRV_ADDR_ENV));
