@@ -1763,7 +1763,7 @@ public class DefaultMessageStore implements MessageStore {
                 try {
                     MessageStoreConfig messageStoreConfig = DefaultMessageStore.this.getMessageStoreConfig();
                     int interval = messageStoreConfig.getFlushIntervalConsumeQueue();
-                    this.waitForRunning(interval);
+                    this.waitForRunning(interval, "FlushConsumeQueueService");
                     this.doFlush(1);
                 } catch (Exception e) {
                     DefaultMessageStore.log.warn(this.getServiceName() + " service has exception. ", e);

@@ -62,6 +62,9 @@ public class CommitLog {
     private volatile long beginTimeInLock = 0;
     protected final PutMessageLock putMessageLock;
 
+    /**
+     *
+     */
     public CommitLog(final DefaultMessageStore defaultMessageStore,boolean qianChengDebug) {
         this.mappedFileQueue = new MappedFileQueue(defaultMessageStore.getMessageStoreConfig().getStorePathCommitLog(),
             defaultMessageStore.getMessageStoreConfig().getMappedFileSizeCommitLog(), defaultMessageStore.getAllocateMappedFileService());
@@ -982,7 +985,7 @@ public class CommitLog {
                     if (end - begin > 500) {
                         log.info("Commit data to file costs {} ms", end - begin);
                     }
-                    this.waitForRunning(interval);
+                    this.waitForRunning(interval,"FlushCommitLogService");
                 } catch (Throwable e) {
                     CommitLog.log.error(this.getServiceName() + " service has exception. ", e);
                 }
@@ -1032,7 +1035,7 @@ public class CommitLog {
                     if (flushCommitLogTimed) {
                         Thread.sleep(interval);
                     } else {
-                        this.waitForRunning(interval);
+                        this.waitForRunning(interval,"FlushRealTimeService");
                     }
 
                     if (printFlushProgress) {
@@ -1172,7 +1175,7 @@ public class CommitLog {
             while (!this.isStopped()) {
                 try {
                     //原来是10，为了看效果，钱铖改成了 10000
-                    this.waitForRunning(10000);
+                    this.waitForRunning(10000,"GroupCommitService");
                     this.doCommit();
                 } catch (Exception e) {
                     CommitLog.log.warn(this.getServiceName() + " service has exception. ", e);

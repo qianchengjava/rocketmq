@@ -56,7 +56,7 @@ public class ServiceThreadTest {
     public void testWaitForRunning() {
         ServiceThread testServiceThread = startTestServiceThread();
         // test waitForRunning
-        testServiceThread.waitForRunning(1000);
+        testServiceThread.waitForRunning(1000,"testWaitForRunning");
         assertEquals(false, testServiceThread.hasNotified.get());
         assertEquals(1, testServiceThread.waitPoint.getCount());
         // test wake up
@@ -64,11 +64,11 @@ public class ServiceThreadTest {
         assertEquals(true, testServiceThread.hasNotified.get());
         assertEquals(0, testServiceThread.waitPoint.getCount());
         // repeat waitForRunning
-        testServiceThread.waitForRunning(1000);
+        testServiceThread.waitForRunning(1000,"testWaitForRunning");
         assertEquals(false, testServiceThread.hasNotified.get());
         assertEquals(0, testServiceThread.waitPoint.getCount());
         // repeat waitForRunning again
-        testServiceThread.waitForRunning(1000);
+        testServiceThread.waitForRunning(1000,"testWaitForRunning");
         assertEquals(false, testServiceThread.hasNotified.get());
         assertEquals(1, testServiceThread.waitPoint.getCount());
     }

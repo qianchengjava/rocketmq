@@ -67,7 +67,7 @@ public class FileWatchService extends ServiceThread {
 
         while (!this.isStopped()) {
             try {
-                this.waitForRunning(WATCH_INTERVAL);
+                this.waitForRunning(WATCH_INTERVAL,"FileWatchService");
 
                 for (int i = 0; i < watchFiles.size(); i++) {
                     String newHash;

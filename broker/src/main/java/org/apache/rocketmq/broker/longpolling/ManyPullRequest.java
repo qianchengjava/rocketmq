@@ -17,6 +17,7 @@
 package org.apache.rocketmq.broker.longpolling;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ManyPullRequest {
@@ -31,6 +32,7 @@ public class ManyPullRequest {
     }
 
     public synchronized List<PullRequest> cloneListAndClear() {
+        System.out.println("钱铖 ManyPullRequest-cloneListAndClear()" + new Date());
         if (!this.pullRequestList.isEmpty()) {
             List<PullRequest> result = (ArrayList<PullRequest>) this.pullRequestList.clone();
             this.pullRequestList.clear();

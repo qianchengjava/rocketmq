@@ -18,6 +18,7 @@ package org.apache.rocketmq.common;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.apache.rocketmq.common.constant.LoggerName;
 import org.apache.rocketmq.logging.InternalLogger;
 import org.apache.rocketmq.logging.InternalLoggerFactory;
@@ -80,7 +81,7 @@ public abstract class ServiceThread implements Runnable {
             }
             long elapsedTime = System.currentTimeMillis() - beginTime;
             log.info("join thread " + this.getServiceName() + " elapsed time(ms) " + elapsedTime + " "
-                + this.getJointime());
+                    + this.getJointime());
         } catch (InterruptedException e) {
             log.error("Interrupted", e);
         }
@@ -126,7 +127,8 @@ public abstract class ServiceThread implements Runnable {
         }
     }
 
-    protected void waitForRunning(long interval) {
+    protected void waitForRunning(long interval, String qianchengMethod) {
+        System.out.println(this.getClass().getName() + "| " + qianchengMethod + " waitForRunning..." + interval);
         if (hasNotified.compareAndSet(true, false)) {
             this.onWaitEnd();
             return;
