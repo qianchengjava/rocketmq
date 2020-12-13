@@ -305,9 +305,7 @@ public class HAService {
 
             while (!this.isStopped()) {
                 try {
-                    //钱铖 日志打的太频繁，原来是10  this.waitForRunning(10, "GroupTransferService");
-                    int qianchengInterval = 5000;
-                    this.waitForRunning(qianchengInterval, "GroupTransferService");
+                    this.waitForRunning(10, "GroupTransferService");
                     this.doWaitTransfer();
                 } catch (Exception e) {
                     log.warn(this.getServiceName() + " service has exception. ", e);
