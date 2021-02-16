@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.rocketmq.broker.BrokerController;
 import org.apache.rocketmq.common.ServiceThread;
 import org.apache.rocketmq.common.SystemClock;
@@ -96,6 +97,16 @@ public class PullRequestHoldService extends ServiceThread {
     }
 
     private void checkHoldRequest() {
+        System.out.println("每" + this.getWaitPoint().getCount());
+        if (this.pullRequestTable.size() > 0) {
+            System.out.println("pullRequestTable.size():" + pullRequestTable.size());
+
+        }
+        if (1 == 1) {
+            //钱铖测试用代码，一定要注释掉
+//            System.out.println("钱铖测试用代码，一定要注释掉");
+//            return;
+        }
         for (String key : this.pullRequestTable.keySet()) {
             String[] kArray = key.split(TOPIC_QUEUEID_SEPARATOR);
             if (2 == kArray.length) {
@@ -103,7 +114,8 @@ public class PullRequestHoldService extends ServiceThread {
                 int queueId = Integer.parseInt(kArray[1]);
                 final long offset = this.brokerController.getMessageStore().getMaxOffsetInQueue(topic, queueId);
                 try {
-                    this.notifyMessageArriving(topic, queueId, offset);
+                    System.out.println("notifyMessageArriving()| topic:" + topic + "|queueId:" + queueId + "|offset:" + offset);
+                    this.notifyMessageArriving_qiancheng(topic, queueId, offset);
                 } catch (Throwable e) {
                     log.error("check hold request failed. topic={}, queueId={}", topic, queueId, e);
                 }
@@ -111,7 +123,7 @@ public class PullRequestHoldService extends ServiceThread {
         }
     }
 
-    public void notifyMessageArriving(final String topic, final int queueId, final long maxOffset) {
+    public void notifyMessageArriving_qiancheng(final String topic, final int queueId, final long maxOffset) {
         notifyMessageArriving(topic, queueId, maxOffset, null, 0, null, null);
     }
 
@@ -121,7 +133,11 @@ public class PullRequestHoldService extends ServiceThread {
         ManyPullRequest mpr = this.pullRequestTable.get(key);
         if (mpr != null) {
             List<PullRequest> requestList = mpr.cloneListAndClear();
+            if (CollectionUtils.isEmpty(requestList)) {
+                System.out.println("PullRequest is Empty....|" + topic + "|  " + queueId);
+            }
             if (requestList != null) {
+                System.out.println("PullRequest size():" + requestList.size() + "个| " + topic + "|  " + queueId);
                 List<PullRequest> replayList = new ArrayList<PullRequest>();
 
                 for (PullRequest request : requestList) {

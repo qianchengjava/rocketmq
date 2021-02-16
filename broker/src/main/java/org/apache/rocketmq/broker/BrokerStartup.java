@@ -164,6 +164,7 @@ public class BrokerStartup {
 
             switch (messageStoreConfig.getBrokerRole()) {
                 case ASYNC_MASTER:
+                    System.out.println("ASYNC_MASTER....");
                 case SYNC_MASTER:
                     brokerConfig.setBrokerId(MixAll.MASTER_ID);
                     break;

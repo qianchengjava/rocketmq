@@ -1829,7 +1829,8 @@ public class DefaultMessageStore implements MessageStore {
                         this.reputFromOffset, DefaultMessageStore.this.commitLog.getMinOffset());
                 this.reputFromOffset = DefaultMessageStore.this.commitLog.getMinOffset();
             }
-            for (boolean doNext = true; this.isCommitLogAvailable() && doNext; ) {
+            boolean commitLogAvailable = this.isCommitLogAvailable();
+            for (boolean doNext = true; commitLogAvailable && doNext; ) {
 
                 if (DefaultMessageStore.this.getMessageStoreConfig().isDuplicationEnable()
                         && this.reputFromOffset >= DefaultMessageStore.this.getConfirmOffset()) {
@@ -1904,7 +1905,13 @@ public class DefaultMessageStore implements MessageStore {
 
             while (!this.isStopped()) {
                 try {
-                    Thread.sleep(1);
+                    //原代码
+//                    Thread.sleep(1);
+
+                    //钱铖测试用，
+                    int mills = 4000;
+                    System.out.println("每" + mills + "毫秒跑一次doReput()");
+                    Thread.sleep(mills);
                     this.doReput();
                 } catch (Exception e) {
                     DefaultMessageStore.log.warn(this.getServiceName() + " service has exception. ", e);

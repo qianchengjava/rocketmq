@@ -251,6 +251,7 @@ public class PullMessageProcessor implements NettyRequestProcessor {
 
             switch (this.brokerController.getMessageStoreConfig().getBrokerRole()) {
                 case ASYNC_MASTER:
+                    System.out.println("ASYNC_MASTER...");
                 case SYNC_MASTER:
                     break;
                 case SLAVE:
@@ -551,6 +552,7 @@ public class PullMessageProcessor implements NettyRequestProcessor {
             @Override
             public void run() {
                 try {
+                    System.out.println("executeRequestWhenWakeup...");
                     final RemotingCommand response = PullMessageProcessor.this.processRequest(channel, request, false);
 
                     if (response != null) {

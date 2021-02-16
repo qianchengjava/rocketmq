@@ -88,6 +88,8 @@ public class NamesrvController {
 
             @Override
             public void run() {
+
+                System.out.println("Namesrv scanNotActiveBroker");
                 NamesrvController.this.routeInfoManager.scanNotActiveBroker();
             }
         }, 5, 10, TimeUnit.SECONDS);
@@ -96,6 +98,8 @@ public class NamesrvController {
 
             @Override
             public void run() {
+
+                System.out.println("Namesrv printAllPeriodically");
                 NamesrvController.this.kvConfigManager.printAllPeriodically();
             }
         }, 1, 10, TimeUnit.MINUTES);

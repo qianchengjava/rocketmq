@@ -30,6 +30,10 @@ public abstract class ServiceThread implements Runnable {
 
     private Thread thread;
     protected final CountDownLatch2 waitPoint = new CountDownLatch2(1);
+    //钱铖加的getWaitPoint
+    public CountDownLatch2 getWaitPoint(){
+        return this.waitPoint;
+    }
     protected volatile AtomicBoolean hasNotified = new AtomicBoolean(false);
     protected volatile boolean stopped = false;
     protected boolean isDaemon = false;
